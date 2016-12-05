@@ -73,3 +73,47 @@ class BoxGeometry(Geometry):
             face3.vertex_normals = [normal, normal, normal]
             n_idx += 1
             self.faces.append(face3)
+
+
+class TetrahedronGeometry(Geometry):
+
+    _tetra_vertices = [(1, 1, 1), (-1, -1, 1),
+                      (-1, 1, -1), (1, -1, -1)
+    ]
+
+    _tetra_faces = [(0, 1, 2), (0, 2, 3), (0, 1, 3),
+                   (1, 2, 3)
+                   ]
+
+    _tetra_normals = [(0, 0, 1), (-1, 0, 0), (0, 0, -1),
+                     (1, 0, 0)
+                     ]
+
+    def __init__(self, width, height, depth, **kw):
+        name = kw.pop('name', '')
+        super(TetrahedronGeometry, self).__init__(name)
+        self.width_segment = kw.pop('width_segment', 1)
+        self.height_segment = kw.pop('height_segment', 1)
+        self.depth_segment = kw.pop('depth_segment', 1)
+
+        self.w = width
+        self.h = height
+        self.d = depth
+
+        self._build_box()
+
+    def _build_box(self):
+
+        for v in self._tetra_vertices:
+            v = Vector3(0.5 * v[0] * self.w,
+                        0.5 * v[1] * self.h,
+                        0.5 * v[2] * self.d)
+            self.vertices.append(v)
+
+        n_idx = 0
+        for f in self._tetra_faces:
+            face3 = Face3(*f)
+            normal = self._tetra_normals[n_idx / 2]
+            face3.vertex_normals = [normal, normal, normal]
+            n_idx += 1
+            self.faces.append(face3)
