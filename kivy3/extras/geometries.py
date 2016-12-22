@@ -31,13 +31,13 @@ from math import sqrt
 def get_normals(faces, vertices):
     normals = []
     for face in faces:
-        ix = face[0]
-        iy = face[1]
-        iz = face[2]
+        ((x1, y1, z1),
+        (x2, y2, z2),
+        (x3, y3, z3)) = [vertices[p] for p in face]
         norm = (
-            vertices[ix][0] + vertices[iy][0] + vertices[iz][0],
-            vertices[ix][1] + vertices[iy][1] + vertices[iz][1],
-            vertices[ix][2] + vertices[iy][2] + vertices[iz][2]
+            (y2 - y1) * (z3 - z1) - (y3 - y1) * (z2 - z1),
+            (z2 - z1) * (x3 - x1) - (x2 - x1) * (z3 - z1),
+            (x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1)
         )
         det = sqrt(norm[0] * norm[0] + norm[1] * norm[1] + norm[2] * norm[2])
         norm = [n / float(det) for n in norm]
