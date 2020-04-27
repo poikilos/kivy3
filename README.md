@@ -20,7 +20,7 @@ For further info visit
 [Kivy documentation](https://kivy.org/docs/installation/installation.html).
 After successful Kivy installation install Kivy3 with this:
 
-    $ pip install https://github.com/KeyWeeUsr/kivy3/zipball/master
+    $ pip install https://github.com/kivy/kivy3/archive/master.zip
 
 # Packaging kivy3
 
