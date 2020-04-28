@@ -28,13 +28,14 @@ Object3D class
 
 """
 
-from kivy.properties import (
-    NumericProperty, ListProperty,
-    ObjectProperty, AliasProperty
-)
+from kivy.properties import NumericProperty, ListProperty, ObjectProperty, AliasProperty
 from kivy.graphics import (
-    Scale, Rotate, PushMatrix, PopMatrix,
-    Translate, UpdateNormalMatrix
+    Scale,
+    Rotate,
+    PushMatrix,
+    PopMatrix,
+    Translate,
+    UpdateNormalMatrix,
 )
 from kivy.graphics.instructions import InstructionGroup
 from kivy.event import EventDispatcher
@@ -45,22 +46,20 @@ import math
 from scipy.spatial.transform import Rotation as R
 
 
-
-
 class Object3D(EventDispatcher):
     """Base class for all 3D objects in rendered
     3D world.
     """
 
     def __init__(self, **kw):
-        self.name = kw.pop('name', '')
+        self.name = kw.pop("name", "")
         super(Object3D, self).__init__()
         self.children = list()
         self.parent = None
 
         self._mat_instruction = None
 
-        self._scale = Scale(1., 1., 1.)
+        self._scale = Scale(1.0, 1.0, 1.0)
         self._position = Vector3(0, 0, 0)
         self._rotation = Vector3(0, 0, 0)
         self._position.set_change_cb(self.on_pos_changed)
@@ -78,13 +77,13 @@ class Object3D(EventDispatcher):
 
         self._instructions = InstructionGroup()
 
-        #Vertices Object contating an approximate bound box of the object.
+        # Vertices Object contating an approximate bound box of the object.
         self.bounding_vertices = []
 
     def set_rotation_rpy(self, rpy):
         """Set rotation for xyz rpy order"""
-        r = R.from_euler('xyz', rpy, degrees=True)
-        a = r.as_euler('zyx', degrees=True)
+        r = R.from_euler("xyz", rpy, degrees=True)
+        a = r.as_euler("zyx", degrees=True)
         self.rot.x = float(a[2])
         self.rot.y = float(a[1])
         self.rot.z = float(a[0])
@@ -100,7 +99,7 @@ class Object3D(EventDispatcher):
         self.pos.z = float(xyz[2])
 
     def add_object(self, *objs):
-        #Add object after rendering has begun
+        # Add object after rendering has begun
         for obj in objs:
             if obj not in self.children:
                 self._add_child(obj)
@@ -111,7 +110,6 @@ class Object3D(EventDispatcher):
                 self._instructions.add(rot)
             self._instructions.add(obj.as_instructions())
             self._instructions.add(self._pop_matrix)
-
 
     def remove_object(self, object):
         instr = object.as_instructions()
@@ -177,12 +175,13 @@ class Object3D(EventDispatcher):
     def on_angle_change(self, axis, angle):
         self._rotors[axis].angle = angle
 
-
-    def calculate_forward_kinematics(self, offset_xyz=[0,0,0], offset_rpy=[0,0,0], base=None):
+    def calculate_forward_kinematics(
+        self, offset_xyz=[0, 0, 0], offset_rpy=[0, 0, 0], base=None
+    ):
         # Return [[xyz],[rpy]]
         xyz = offset_xyz
-        offset_ypr= [offset_rpy[2],offset_rpy[1],offset_rpy[0]]
-        ypr = R.from_euler('zyx', offset_ypr, degrees=True)
+        offset_ypr = [offset_rpy[2], offset_rpy[1], offset_rpy[0]]
+        ypr = R.from_euler("zyx", offset_ypr, degrees=True)
         current_object = self
         while current_object is not base:
             # print(current_object.name, self.pos, g_c)
@@ -190,45 +189,60 @@ class Object3D(EventDispatcher):
             a = math.radians(current_object.rot[0])
             b = math.radians(current_object.rot[1])
             c = math.radians(current_object.rot[2])
-            rx = np.array([[1, 0, 0],
-                          [0, math.cos(a), -math.sin(a)],
-                          [0, math.sin(a), math.cos(a)]])
-            ry = np.array([[math.cos(b), 0, math.sin(b)],
-                          [0, 1, 0],
-                          [-math.sin(b), 0, math.cos(b)]])
+            rx = np.array(
+                [
+                    [1, 0, 0],
+                    [0, math.cos(a), -math.sin(a)],
+                    [0, math.sin(a), math.cos(a)],
+                ]
+            )
+            ry = np.array(
+                [
+                    [math.cos(b), 0, math.sin(b)],
+                    [0, 1, 0],
+                    [-math.sin(b), 0, math.cos(b)],
+                ]
+            )
 
-            rz = np.array([[math.cos(c), -math.sin(c), 0],
-                          [math.sin(c), math.cos(c), 0],
-                          [0, 0, 1]])
+            rz = np.array(
+                [
+                    [math.cos(c), -math.sin(c), 0],
+                    [math.sin(c), math.cos(c), 0],
+                    [0, 0, 1],
+                ]
+            )
             xyz = rx.dot(xyz)
             xyz = ry.dot(xyz)
             xyz = rz.dot(xyz)
 
-            #Calculate transform
+            # Calculate transform
             # g_c = Vector3(g_c[0],g_c[1],g_c[2])
-            cur_rot = [current_object.rot[2],current_object.rot[1],current_object.rot[0]]
-            current_ypr = R.from_euler('zyx', cur_rot, degrees=True)
+            cur_rot = [
+                current_object.rot[2],
+                current_object.rot[1],
+                current_object.rot[0],
+            ]
+            current_ypr = R.from_euler("zyx", cur_rot, degrees=True)
 
-            ypr = current_ypr*ypr
+            ypr = current_ypr * ypr
 
-            rpy=ypr.as_euler("zyx", degrees=True)
-            rpy = [rpy[2],rpy[1],rpy[0]]
+            rpy = ypr.as_euler("zyx", degrees=True)
+            rpy = [rpy[2], rpy[1], rpy[0]]
 
             xyz[0] += current_object.pos[0]
             xyz[1] += current_object.pos[1]
             xyz[2] += current_object.pos[2]
             current_object = current_object.parent
 
-        return [xyz,rpy]
+        return [xyz, rpy]
 
     def set_material(self, mat):
         # Override function to change the material of an object
         pass
 
-    def get_material(self,mat):
+    def get_material(self, mat):
         # Override to return the current material
         pass
-
 
     def as_instructions(self):
         """ Get instructions set for renderer """

@@ -10,27 +10,43 @@ import numpy as np
 from stl import mesh
 
 DEFAULT_VERTEX_FORMAT = [
-    (b'v_pos', 3, 'float'),
-    (b'v_normal', 3, 'float'),
-    (b'v_tc0', 2, 'float')
+    (b"v_pos", 3, "float"),
+    (b"v_normal", 3, "float"),
+    (b"v_tc0", 2, "float"),
 ]
-DEFAULT_MESH_MODE = 'triangles'
+DEFAULT_MESH_MODE = "triangles"
 
 
 class STLMesh(Object3D):
     def __init__(self, v0, v1, v2, normals, material, **kw):
         super(STLMesh, self).__init__(**kw)
-        self.vertex_format = kw.pop('vertex_format', DEFAULT_VERTEX_FORMAT)
-        self.mesh_mode = kw.pop('mesh_mode', DEFAULT_MESH_MODE)
+        self.vertex_format = kw.pop("vertex_format", DEFAULT_VERTEX_FORMAT)
+        self.mesh_mode = kw.pop("mesh_mode", DEFAULT_MESH_MODE)
         self.material = material
         self.normals = normals
-        indices = list(range(0, len(v0)*3))
+        indices = list(range(0, len(v0) * 3))
         uvs = np.zeros((len(v0), 2)).astype(np.float32)
-        vertices = list(np.block([v0.astype(np.float32),normals.astype(np.float32),uvs,v1.astype(np.float32),normals.astype(np.float32),uvs,v2.astype(np.float32),normals.astype(np.float32),uvs]).flatten())
-        kw2=dict(vertices=vertices,
-                indices=indices,
-                fmt=self.vertex_format,
-                mode=self.mesh_mode)
+        vertices = list(
+            np.block(
+                [
+                    v0.astype(np.float32),
+                    normals.astype(np.float32),
+                    uvs,
+                    v1.astype(np.float32),
+                    normals.astype(np.float32),
+                    uvs,
+                    v2.astype(np.float32),
+                    normals.astype(np.float32),
+                    uvs,
+                ]
+            ).flatten()
+        )
+        kw2 = dict(
+            vertices=vertices,
+            indices=indices,
+            fmt=self.vertex_format,
+            mode=self.mesh_mode,
+        )
 
         # if self.material.map:
         #     kw2['texture'] = self.material.map
@@ -69,25 +85,35 @@ class STLObject(Object3D):
 
     def create_mesh(self):
         """ Create real mesh object from the geometry and material """
-        max_faces = 65530//3
-        #geometries = []
+        max_faces = 65530 // 3
+        # geometries = []
         start = 0
 
-        while(True):
-            _faces=[]
+        while True:
+            _faces = []
             _vertices = []
-            if (len(self.stl_mesh.v0)-start) >= max_faces:
+            if (len(self.stl_mesh.v0) - start) >= max_faces:
                 length = max_faces
 
-                mesh = STLMesh(self.stl_mesh.v0[start:start+length], self.stl_mesh.v1[start:start+length], self.stl_mesh.v2[start:start+length], self.stl_mesh.normals[start:start+length],
-                self.material)
+                mesh = STLMesh(
+                    self.stl_mesh.v0[start : start + length],
+                    self.stl_mesh.v1[start : start + length],
+                    self.stl_mesh.v2[start : start + length],
+                    self.stl_mesh.normals[start : start + length],
+                    self.material,
+                )
                 self.add(mesh)
-                start = start+length
+                start = start + length
                 self.meshes.append(mesh)
 
             else:
-                mesh = STLMesh(self.stl_mesh.v0[start:], self.stl_mesh.v1[start:], self.stl_mesh.v2[start:], self.stl_mesh.normals[start:],
-                self.material)
+                mesh = STLMesh(
+                    self.stl_mesh.v0[start:],
+                    self.stl_mesh.v1[start:],
+                    self.stl_mesh.v2[start:],
+                    self.stl_mesh.normals[start:],
+                    self.material,
+                )
 
                 self.add(mesh)
                 self.meshes.append(mesh)
@@ -96,14 +122,12 @@ class STLObject(Object3D):
         return self
 
     # def custom_instructions(self):
-        #yield self.material
-        #yield self._mesh
+    # yield self.material
+    # yield self._mesh
 
-    def set_material(self,mat):
+    def set_material(self, mat):
         for stl_mesh in self.meshes:
             stl_mesh.set_material(mat)
-
-
 
 
 class STLLoader(BaseLoader):
@@ -114,16 +138,11 @@ class STLLoader(BaseLoader):
         self.material = material
         return super(STLLoader, self).load(source, **kw)
 
-
     def parse(self):
 
         stl = mesh.Mesh.from_file(self.source)
 
-
-
-        stl_object = STLObject(stl,self.material)
+        stl_object = STLObject(stl, self.material)
         # stl_object.scale=[0.5,1,1]
-
-
 
         return stl_object

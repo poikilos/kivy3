@@ -1,4 +1,3 @@
-
 import os
 import kivy3
 from kivy.app import App
@@ -23,24 +22,24 @@ stl_file = os.path.join(_this_path, "./test.stl")
 
 
 class SceneApp(App):
-
     def build(self):
         root = FloatLayout()
 
         self.renderer = Renderer(shader_file=shader_file)
-        self.renderer.set_clear_color((.16, .30, .44, 1.))
+        self.renderer.set_clear_color((0.16, 0.30, 0.44, 1.0))
 
         scene = Scene()
         # geometry = CylinderGeometry(0.5, 2)
         geometry = SphereGeometry(1)
         # geometry = BoxGeometry(1, 1, 1)
-        material = Material(color=(0.3, 0., 0.3), diffuse=(0.3, 0.3, 0.3),
-                            specular=(0.1, 0.1, 0.1))
+        material = Material(
+            color=(0.3, 0.0, 0.3), diffuse=(0.3, 0.3, 0.3), specular=(0.1, 0.1, 0.1)
+        )
 
         loader = STLLoader()
         obj = loader.load(stl_file, material)
         self.item = obj
-        self.theta = 0.
+        self.theta = 0.0
 
         scene.add(self.item)
 
@@ -59,7 +58,7 @@ class SceneApp(App):
 
         root.add_widget(self.renderer)
 
-        orbit = OrbitControlWidget(self.renderer, 4.)
+        orbit = OrbitControlWidget(self.renderer, 4.0)
 
         root.add_widget(orbit)
 
@@ -91,9 +90,10 @@ class SceneApp(App):
         # self.camera.update()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     from kivy.config import Config
+
     # Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
     SceneApp().run()

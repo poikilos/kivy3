@@ -1,4 +1,3 @@
-
 import os
 import kivy3
 from kivy.app import App
@@ -15,7 +14,6 @@ mtl_file = os.path.join(_this_path, "./orion.mtl")
 
 
 class MainApp(App):
-
     def build(self):
         root = FloatLayout()
         self.renderer = Renderer(shader_file=shader_file)
@@ -26,7 +24,7 @@ class MainApp(App):
 
         scene.add(*obj.children)
         for obj in scene.children:
-            obj.pos.z = -20.
+            obj.pos.z = -20.0
 
         self.renderer.render(scene, camera)
         self.orion = scene.children[0]
@@ -45,5 +43,5 @@ class MainApp(App):
         self.orion.rot.x += 2
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

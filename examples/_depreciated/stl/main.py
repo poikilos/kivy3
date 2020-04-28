@@ -40,7 +40,6 @@ stl_file = "D:/TheBlueprintLab/Projects/ReachControl/kivy3_repo/examples/urdf/RS
 
 
 class MainApp(App):
-
     def build(self):
         root = FloatLayout()
         self.renderer = Renderer()
@@ -48,8 +47,9 @@ class MainApp(App):
         # load stl file
         mesh_a = mesh.Mesh.from_file(stl_file)
         geo = STLGeometry(mesh_a)
-        material = Material(color=(0., 0., 1.), diffuse=(0., 0., 0.1),
-                            specular=(.1, .1, .1))
+        material = Material(
+            color=(0.0, 0.0, 1.0), diffuse=(0.0, 0.0, 0.1), specular=(0.1, 0.1, 0.1)
+        )
         obj = Mesh(geo, material)
 
         # obj.position.z = 10
@@ -65,7 +65,7 @@ class MainApp(App):
 
         self.renderer.render(scene, camera)
         root.add_widget(self.renderer)
-        Clock.schedule_interval(self._update_obj, 1. / 20)
+        Clock.schedule_interval(self._update_obj, 1.0 / 20)
         self.renderer.bind(size=self._adjust_aspect)
         return root
 
@@ -83,5 +83,5 @@ class MainApp(App):
         self.renderer.camera.aspect = aspect
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

@@ -1,9 +1,6 @@
 from kivy.core.window import Window
 from kivy.event import EventDispatcher
-from kivy.properties import (
-    NumericProperty,
-    ReferenceListProperty
-)
+from kivy.properties import NumericProperty, ReferenceListProperty
 
 # Map for light attributes to shader
 # uniform variables
@@ -27,8 +24,7 @@ class Light(EventDispatcher):
     pos = ReferenceListProperty(pos_x, pos_y, pos_z)
     intensity = NumericProperty(1000.0)
 
-    def __init__(self, renderer=None, intensity=None,
-                 pos=None, origin=None, **kwargs):
+    def __init__(self, renderer=None, intensity=None, pos=None, origin=None, **kwargs):
         if not renderer:
             raise LightError("Renderer is not defined!")
         super(Light, self).__init__(**kwargs)
@@ -37,15 +33,10 @@ class Light(EventDispatcher):
         self.on_intensity(self, intensity if intensity else self.intensity)
 
     def on_pos(self, instance, value):
-        self._update_fbo(
-            'pos',
-            (float(value[0]),
-             float(value[1]),
-             float(value[2]))
-        )
+        self._update_fbo("pos", (float(value[0]), float(value[1]), float(value[2])))
 
     def on_intensity(self, instance, value):
-        self._update_fbo('intensity', float(value))
+        self._update_fbo("intensity", float(value))
 
     def _update_fbo(self, key, value):
         if key in LIGHT_TO_SHADER_MAP:

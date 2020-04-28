@@ -1,4 +1,3 @@
-
 import os
 import kivy3
 from kivy.app import App
@@ -16,7 +15,6 @@ mtl_file = os.path.join(_this_path, "../textures/orion.mtl")
 
 
 class MainApp(App):
-
     def build(self):
         self.look_at = Vector3(0, 0, -1)
         root = FloatLayout()
@@ -49,22 +47,22 @@ class MainApp(App):
         self._keyboard = None
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        if keycode[1] == 'w':
+        if keycode[1] == "w":
             self.camera.pos.z -= 0.2
-        elif keycode[1] == 's':
+        elif keycode[1] == "s":
             self.camera.pos.z += 0.2
-        elif keycode[1] == 'a':
+        elif keycode[1] == "a":
             self.camera.pos.y -= 0.2
-        elif keycode[1] == 'd':
+        elif keycode[1] == "d":
             self.camera.pos.y += 0.2
 
-        elif keycode[1] == 'up':
+        elif keycode[1] == "up":
             self.look_at.y += 0.2
-        elif keycode[1] == 'down':
+        elif keycode[1] == "down":
             self.look_at.y -= 0.2
-        elif keycode[1] == 'right':
+        elif keycode[1] == "right":
             self.look_at.x += 0.2
-        elif keycode[1] == 'left':
+        elif keycode[1] == "left":
             self.look_at.x -= 0.2
 
         self.camera.look_at(self.look_at)
@@ -74,5 +72,5 @@ class MainApp(App):
         self.orion.rot.z += 2
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

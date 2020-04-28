@@ -1,4 +1,3 @@
-
 """
 The MIT License (MIT)
 
@@ -45,11 +44,16 @@ from kivy.graphics.opengl import glEnable, glDisable, GL_DEPTH_TEST
 from kivy.graphics.transformation import Matrix
 from kivy.graphics.context_instructions import Color
 from kivy.graphics import (
-    Callback, PushMatrix, PopMatrix,
-    Rectangle, Canvas, UpdateNormalMatrix
+    Callback,
+    PushMatrix,
+    PopMatrix,
+    Rectangle,
+    Canvas,
+    UpdateNormalMatrix,
 )
 
 from .light import Light
+
 kivy3_path = os.path.abspath(os.path.dirname(kivy3.__file__))
 
 
@@ -58,7 +62,6 @@ class RendererError(Exception):
 
 
 class Renderer(Widget):
-
     def __init__(self, **kw):
         self.shader_file = kw.pop("shader_file", None)
         self.canvas = Canvas()
@@ -67,9 +70,12 @@ class Renderer(Widget):
         with self.canvas:
             clear_color = Color(rgba=(1, 1, 1, 1))
             self._viewport = Rectangle(size=self.size, pos=self.pos)
-            self.fbo = Fbo(size=self.size,
-                           with_depthbuffer=True, compute_normal_mat=True,
-                           clear_color=(1, 1, 1, 1))
+            self.fbo = Fbo(
+                size=self.size,
+                with_depthbuffer=True,
+                compute_normal_mat=True,
+                clear_color=(1, 1, 1, 1),
+            )
         self._config_fbo()
         self.texture = self.fbo.texture
         self.camera = None
@@ -78,8 +84,9 @@ class Renderer(Widget):
 
     def _config_fbo(self):
         # set shader file here
-        self.fbo.shader.source = self.shader_file or \
-            os.path.join(kivy3_path, "default.glsl")
+        self.fbo.shader.source = self.shader_file or os.path.join(
+            kivy3_path, "default.glsl"
+        )
         with self.fbo:
             Callback(self._setup_gl_context)
             PushMatrix()
@@ -119,12 +126,11 @@ class Renderer(Widget):
 
     def _update_matrices(self, dt=None):
         if self.camera:
-            self.fbo['projection_mat'] = self.camera.projection_matrix
-            self.fbo['modelview_mat'] = self.camera.modelview_matrix
-            self.fbo['model_mat'] = self.camera.model_matrix
-            self.fbo['camera_pos'] = [float(p) for p in self.camera.position]
-            self.fbo['view_mat'] = Matrix().rotate(
-                Window.rotation, 0.0, 0.0, 1.0)
+            self.fbo["projection_mat"] = self.camera.projection_matrix
+            self.fbo["modelview_mat"] = self.camera.modelview_matrix
+            self.fbo["model_mat"] = self.camera.model_matrix
+            self.fbo["camera_pos"] = [float(p) for p in self.camera.position]
+            self.fbo["view_mat"] = Matrix().rotate(Window.rotation, 0.0, 0.0, 1.0)
         else:
             raise RendererError("Camera is not defined for renderer")
 

@@ -29,7 +29,7 @@ Perspective camera module
 Implements perspective camera.
 """
 
-__all__ = ('PerspectiveCamera', )
+__all__ = ("PerspectiveCamera",)
 
 from kivy.properties import NumericProperty
 from kivy.graphics.transformation import Matrix

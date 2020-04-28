@@ -36,7 +36,6 @@ obj_file = os.path.join(_this_path, "./monkey.obj")
 
 
 class MainApp(App):
-
     def build(self):
         root = FloatLayout()
         self.renderer = Renderer(shader_file=shader_file)
@@ -51,7 +50,7 @@ class MainApp(App):
 
         self.renderer.render(scene, camera)
         root.add_widget(self.renderer)
-        Clock.schedule_interval(self._update_obj, 1. / 20)
+        Clock.schedule_interval(self._update_obj, 1.0 / 20)
         self.renderer.bind(size=self._adjust_aspect)
         return root
 
@@ -66,5 +65,5 @@ class MainApp(App):
         self.renderer.camera.aspect = aspect
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

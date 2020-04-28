@@ -42,7 +42,6 @@ obj_path = os.path.join(_this_path, "./testnurbs.obj")
 
 
 class MainApp(App):
-
     def build(self):
         root = FloatLayout()
         self.renderer = Renderer(shader_file=shader_file)
@@ -67,5 +66,5 @@ class MainApp(App):
         self.renderer.camera.aspect = aspect
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

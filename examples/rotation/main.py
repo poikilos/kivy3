@@ -1,4 +1,3 @@
-
 import os
 import math
 from kivy.app import App
@@ -8,7 +7,16 @@ from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 
-from kivy3 import Scene, Renderer, PerspectiveCamera, Geometry, Vector3, Material, Mesh, Face3
+from kivy3 import (
+    Scene,
+    Renderer,
+    PerspectiveCamera,
+    Geometry,
+    Vector3,
+    Material,
+    Mesh,
+    Face3,
+)
 from kivy3.core.line2 import Line2
 from kivy3.extras.geometries import BoxGeometry, GridGeometry
 from kivy3.loaders import OBJLoader
@@ -19,11 +27,10 @@ from kivy3.objects.lines import Lines
 _this_path = os.path.dirname(os.path.realpath(__file__))
 shader_file = os.path.join(_this_path, "./blinnphong.glsl")
 
-clear_color = (.2, .2, .2, 1.)
+clear_color = (0.2, 0.2, 0.2, 1.0)
 
 
 class MainApp(App):
-
     def build(self):
         self.renderer = Renderer(shader_file=shader_file)
         scene = Scene()
@@ -36,27 +43,39 @@ class MainApp(App):
 
         id_color = (0, 0, 0x7F)
         geometry = BoxGeometry(1, 1, 1)
-        material = Material(color=(1., 1., 1.), diffuse=(1., 1., 1.),
-                            specular=(.35, .35, .35), id_color=id_color,
-                            shininess=1.)
+        material = Material(
+            color=(1.0, 1.0, 1.0),
+            diffuse=(1.0, 1.0, 1.0),
+            specular=(0.35, 0.35, 0.35),
+            id_color=id_color,
+            shininess=1.0,
+        )
         obj = Mesh(geometry, material)
         scene.add(obj)
-        root.object_list.append({'id': id_color, 'obj': obj})
+        root.object_list.append({"id": id_color, "obj": obj})
 
         id_color = (0, 0x7F, 0)
         geometry = BoxGeometry(1, 1, 1)
-        material = Material(color=(0., 0., 1.), diffuse=(0., 0., 1.),
-                            specular=(.35, .35, .35), id_color=id_color,
-                            shininess=1.)
+        material = Material(
+            color=(0.0, 0.0, 1.0),
+            diffuse=(0.0, 0.0, 1.0),
+            specular=(0.35, 0.35, 0.35),
+            id_color=id_color,
+            shininess=1.0,
+        )
         obj = Mesh(geometry, material)
         obj.position.x = 2
         scene.add(obj)
-        root.object_list.append({'id': id_color, 'obj': obj})
+        root.object_list.append({"id": id_color, "obj": obj})
 
         # create a grid on the xz plane
         geometry = GridGeometry(size=(30, 30), spacing=1)
-        material = Material(color=(1., 1., 1.), diffuse=(1., 1., 1.),
-                            specular=(.35, .35, .35), transparency=.5)
+        material = Material(
+            color=(1.0, 1.0, 1.0),
+            diffuse=(1.0, 1.0, 1.0),
+            specular=(0.35, 0.35, 0.35),
+            transparency=0.5,
+        )
         lines = Lines(geometry, material)
         lines.rotation.x = 90
         scene.add(lines)
@@ -64,8 +83,9 @@ class MainApp(App):
         geometry = Geometry()
         geometry.vertices = [[0.0, 0.0, 0.0], [3.0, 0.0, 0.0]]
         geometry.lines = [Line2(a=0, b=1)]
-        material = Material(color=(1., 0., 0.), diffuse=(1., 0., 0.),
-                            specular=(.35, .35, .35))
+        material = Material(
+            color=(1.0, 0.0, 0.0), diffuse=(1.0, 0.0, 0.0), specular=(0.35, 0.35, 0.35)
+        )
         lines = Lines(geometry, material)
         lines.position.y = -0.01
         scene.add(lines)
@@ -73,16 +93,18 @@ class MainApp(App):
         geometry = Geometry()
         geometry.vertices = [[0.0, 0.0, 0.0], [0.0, 3.0, 0.0]]
         geometry.lines = [Line2(a=0, b=1)]
-        material = Material(color=(0., 1., 0.), diffuse=(0., 1., 0.),
-                            specular=(1., 1.0, 1.0))
+        material = Material(
+            color=(0.0, 1.0, 0.0), diffuse=(0.0, 1.0, 0.0), specular=(1.0, 1.0, 1.0)
+        )
         lines = Lines(geometry, material)
         scene.add(lines)
 
         geometry = Geometry()
         geometry.vertices = [[0.0, 0.0, 0.0], [0.0, 0.0, 3.0]]
         geometry.lines = [Line2(a=0, b=1)]
-        material = Material(color=(0., 0., 1.), diffuse=(0., 0., 1.),
-                            specular=(.35, .35, .35))
+        material = Material(
+            color=(0.0, 0.0, 1.0), diffuse=(0.0, 0.0, 1.0), specular=(0.35, 0.35, 0.35)
+        )
         lines = Lines(geometry, material)
         lines.position.y = -0.01
         scene.add(lines)
@@ -91,8 +113,9 @@ class MainApp(App):
         geometry = Geometry()
         geometry.vertices = [[0.0, 0.0, 0.0], [3.0, 0.0, 0.0]]
         geometry.lines = [Line2(a=0, b=1)]
-        material = Material(color=(1., 0., 0.), diffuse=(1., 0., 0.),
-                            specular=(.35, .35, .35))
+        material = Material(
+            color=(1.0, 0.0, 0.0), diffuse=(1.0, 0.0, 0.0), specular=(0.35, 0.35, 0.35)
+        )
         x_line = Lines(geometry, material)
 
         scene.add(x_line)
@@ -100,8 +123,9 @@ class MainApp(App):
         geometry = Geometry()
         geometry.vertices = [[0.0, 0.0, 0.0], [0.0, 3.0, 0.0]]
         geometry.lines = [Line2(a=0, b=1)]
-        material = Material(color=(0., 1., 0.), diffuse=(0., 1., 0.),
-                            specular=(1., 1.0, 1.0))
+        material = Material(
+            color=(0.0, 1.0, 0.0), diffuse=(0.0, 1.0, 0.0), specular=(1.0, 1.0, 1.0)
+        )
         y_line = Lines(geometry, material)
 
         x_line.add(y_line)
@@ -109,8 +133,9 @@ class MainApp(App):
         geometry = Geometry()
         geometry.vertices = [[0.0, 0.0, 0.0], [0.0, 0.0, 3.0]]
         geometry.lines = [Line2(a=0, b=1)]
-        material = Material(color=(0., 0., 1.), diffuse=(0., 0., 1.),
-                            specular=(.35, .35, .35))
+        material = Material(
+            color=(0.0, 0.0, 1.0), diffuse=(0.0, 0.0, 1.0), specular=(0.35, 0.35, 0.35)
+        )
         z_line = Lines(geometry, material)
 
         x_line.add(z_line)
@@ -192,8 +217,8 @@ class ObjectTrackball(FloatLayout):
             self.select_clicked_object(touch)
 
     def select_clicked_object(self, touch):
-        self.renderer.fbo.shader.source = 'select_mode.glsl'
-        self.renderer.set_clear_color((0., 0., 0., 0.))
+        self.renderer.fbo.shader.source = "select_mode.glsl"
+        self.renderer.set_clear_color((0.0, 0.0, 0.0, 0.0))
         self.renderer.fbo.ask_update()
         self.renderer.fbo.draw()
         print(self.renderer.fbo.get_pixel_color(touch.x, touch.y))
@@ -366,11 +391,11 @@ class ObjectTrackball(FloatLayout):
 
     def get_selected_object(self, selected_id):
         for obj in self.object_list:
-            if list(obj['id'][0:3]) == selected_id[0:3]:
-                self.selected_object = obj['obj']
+            if list(obj["id"][0:3]) == selected_id[0:3]:
+                self.selected_object = obj["obj"]
                 return self.selected_object
         self.selected_object = None
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

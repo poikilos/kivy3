@@ -36,7 +36,6 @@ from kivy.uix.floatlayout import FloatLayout
 
 
 class MainApp(App):
-
     def build(self):
         root = FloatLayout()
         self.renderer = Renderer()
@@ -50,18 +49,18 @@ class MainApp(App):
         scene.add(*obj.children)
         for obj in scene.children:
             obj.pos.z = -20
-            obj.material.specular = .35, .35, .35
+            obj.material.specular = 0.35, 0.35, 0.35
 
         # set colors to 3d objects
-        scene.children[0].material.color = 0., .7, 0.  # green
-        scene.children[1].material.color = .7, 0., 0.  # red
-        scene.children[2].material.color = 0., 0., .7  # blue
-        scene.children[3].material.color = .7, .7, 0.  # yellow
+        scene.children[0].material.color = 0.0, 0.7, 0.0  # green
+        scene.children[1].material.color = 0.7, 0.0, 0.0  # red
+        scene.children[2].material.color = 0.0, 0.0, 0.7  # blue
+        scene.children[3].material.color = 0.7, 0.7, 0.0  # yellow
 
-        scene.children[0].material.diffuse = 0., .7, 0.  # green
-        scene.children[1].material.diffuse = .7, 0., 0.  # red
-        scene.children[2].material.diffuse = 0., 0., .7  # blue
-        scene.children[3].material.diffuse = .7, .7, 0.  # yellow
+        scene.children[0].material.diffuse = 0.0, 0.7, 0.0  # green
+        scene.children[1].material.diffuse = 0.7, 0.0, 0.0  # red
+        scene.children[2].material.diffuse = 0.0, 0.0, 0.7  # blue
+        scene.children[3].material.diffuse = 0.7, 0.7, 0.0  # yellow
 
         self.renderer.render(scene, camera)
         root.add_widget(self.renderer)
@@ -74,5 +73,5 @@ class MainApp(App):
         self.renderer.camera.aspect = aspect
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()
