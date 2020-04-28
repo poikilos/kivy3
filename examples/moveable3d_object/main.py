@@ -1,33 +1,40 @@
-import os
-
-os.environ["KIVY_NO_CONSOLELOG"] = "1"
-import math
+#
+# The MIT License (MIT)
+#
+# Copyright (c) 2020 kivy3 Contributors
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.scatterlayout import ScatterLayout
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.properties import ListProperty
-from kivy.clock import Clock
-from kivy.core.image import Image
-
-from kivy3 import Scene, Renderer, PerspectiveCamera
-from kivy3.extras.geometries import PlaneGeometry, ConeGeometry, BoxGeometry
-from kivy3.extras.objects import ArrowObject, AxisObject
-from kivy3.loaders import URDFLoader
-from kivy3 import Mesh, Material, Object3D
-from kivy3.widgets import OrbitControlWidget, SelectionWidget, Object3DWidget
-from kivy3.extras.Widgets3D import Moveable3DWidget
-
-
-from kivy.graphics.opengl import (
-    glEnable,
-    glDisable,
-    GL_DEPTH_TEST,
-    glReadPixels,
-    GL_RGBA,
-    GL_UNSIGNED_BYTE,
-)
-
+from kivy3 import Material
+from kivy3 import Mesh
+from kivy3 import Object3D
+from kivy3 import PerspectiveCamera
+from kivy3 import Renderer
+from kivy3 import Scene
+from kivy3.extras.geometries import BoxGeometry
+from kivy3.extras.Widgets3D.moveable3Dwidget import Moveable3DWidget
+from kivy3.widgets import Object3DWidget
+from kivy3.widgets import OrbitControlWidget
+from kivy3.widgets import SelectionWidget
+import os
 
 _this_path = os.path.dirname(os.path.realpath(__file__))
 shader_file = os.path.join(_this_path, "../blinnphong.glsl")
@@ -123,7 +130,6 @@ class VisualisationApp(App):
 
 
 if __name__ == "__main__":
-    from kivy.config import Config
-
+    # from kivy.config import Config
     # Config.set('input', 'mouse', 'mouse,disable_multitouch')
     VisualisationApp().run()

@@ -1,11 +1,36 @@
-import os
-import kivy3
+#
+# The MIT License (MIT)
+#
+# Copyright (c) 2020 kivy3 Contributors
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy3 import Scene, Renderer, PerspectiveCamera, Vector3
-from kivy3.loaders import OBJMTLLoader
 from kivy.uix.floatlayout import FloatLayout
+from kivy3 import PerspectiveCamera
+from kivy3 import Renderer
+from kivy3 import Scene
+from kivy3 import Vector3
+from kivy3.loaders import OBJMTLLoader
+import os
 
 # Resources pathes
 _this_path = os.path.dirname(os.path.realpath(__file__))
@@ -24,7 +49,7 @@ class MainApp(App):
         self.camera.pos.z = 5
         loader = OBJMTLLoader()
         obj = loader.load(obj_file, mtl_file)
-        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
+        self._keyboard = Window.request_keyboard(self._keyboard_closed, root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
 
         scene.add(*obj.children)
