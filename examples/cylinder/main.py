@@ -1,10 +1,18 @@
-
 import os
 import math
 from kivy.app import App
 from kivy.clock import Clock
 
-from kivy3 import Scene, Renderer, PerspectiveCamera, Geometry, Vector3, Material, Mesh, Face3
+from kivy3 import (
+    Scene,
+    Renderer,
+    PerspectiveCamera,
+    Geometry,
+    Vector3,
+    Material,
+    Mesh,
+    Face3,
+)
 from kivy3.core.line2 import Line2
 from kivy3.extras.geometries import CylinderGeometry, GridGeometry
 from kivy3.loaders import OBJLoader
@@ -17,27 +25,35 @@ shader_file = os.path.join(_this_path, "./blinnphong.glsl")
 
 
 class MainApp(App):
-
     def build(self):
         self.renderer = Renderer(shader_file=shader_file)
         scene = Scene()
         camera = PerspectiveCamera(45, 1, 0.1, 2500)
-        self.renderer.set_clear_color((.2, .2, .2, 1.))
+        self.renderer.set_clear_color((0.2, 0.2, 0.2, 1.0))
 
         self.camera = camera
         self.renderer.main_light.intensity = 5000
         root = ObjectTrackball(camera, 10)
 
         geometry = CylinderGeometry(radius=1, length=1)
-        material = Material(color=(1., 1., 1.), diffuse=(1., 1., 1.),
-                            specular=(.35, .35, .35), shininess=200, transparency=0.8)
+        material = Material(
+            color=(1.0, 1.0, 1.0),
+            diffuse=(1.0, 1.0, 1.0),
+            specular=(0.35, 0.35, 0.35),
+            shininess=200,
+            transparency=0.8,
+        )
         obj = Mesh(geometry, material)
         scene.add(obj)
 
         # create a grid on the xz plane
         geometry = GridGeometry(size=(30, 30), spacing=1)
-        material = Material(color=(1., 1., 1.), diffuse=(1., 1., 1.),
-                            specular=(.35, .35, .35), transparency=.1)
+        material = Material(
+            color=(1.0, 1.0, 1.0),
+            diffuse=(1.0, 1.0, 1.0),
+            specular=(0.35, 0.35, 0.35),
+            transparency=0.1,
+        )
         lines = Lines(geometry, material)
         lines.rotation.x = 90
         scene.add(lines)
@@ -56,7 +72,6 @@ class MainApp(App):
 
 
 class ObjectTrackball(FloatLayout):
-
     def __init__(self, camera, radius, *args, **kw):
         super(ObjectTrackball, self).__init__(*args, **kw)
         self.camera = camera
@@ -101,5 +116,5 @@ class ObjectTrackball(FloatLayout):
         self.camera.look_at((0, 0, 0))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

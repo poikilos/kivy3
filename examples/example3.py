@@ -36,7 +36,6 @@ from kivy.uix.floatlayout import FloatLayout
 
 
 class MainApp(App):
-
     def build(self):
         root = FloatLayout()
         self.renderer = Renderer()
@@ -62,5 +61,5 @@ class MainApp(App):
         self.renderer.camera.aspect = aspect
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

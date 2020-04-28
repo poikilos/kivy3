@@ -30,12 +30,11 @@ In this module base camera class is implemented.
 """
 
 
-__all__ = ('Camera', )
+__all__ = ("Camera",)
 
 import math
 
-from kivy.properties import NumericProperty, ListProperty, ObjectProperty, \
-    AliasProperty
+from kivy.properties import NumericProperty, ListProperty, ObjectProperty, AliasProperty
 from kivy.graphics.transformation import Matrix
 from ..math.vectors import Vector3
 from ..core.object3d import Object3D
@@ -85,8 +84,9 @@ class Camera(Object3D):
             v = v[0]
         m = Matrix()
         pos = self._position
-        m = m.look_at(pos[0], pos[1], pos[2], v[0], v[1], v[2],
-                      self.up[0], self.up[1], self.up[2])
+        m = m.look_at(
+            pos[0], pos[1], pos[2], v[0], v[1], v[2], self.up[0], self.up[1], self.up[2]
+        )
         m = m.rotate(radians(self.rot.x), 1.0, 0.0, 0.0)
         m = m.rotate(radians(self.rot.y), 0.0, 1.0, 0.0)
         m = m.rotate(radians(self.rot.z), 0.0, 0.0, 1.0)
@@ -109,10 +109,11 @@ class Camera(Object3D):
                 self.renderer._viewport.pos[0],
                 self.renderer._viewport.pos[1],
                 self.renderer._viewport.size[0],
-                self.renderer._viewport.size[1]
+                self.renderer._viewport.size[1],
             )
             model_matrix = self.modelview_matrix.multiply(
-                self.renderer.fbo['view_mat'].inverse())
+                self.renderer.fbo["view_mat"].inverse()
+            )
             self.model_matrix = model_matrix
             self.renderer._update_matrices()
 

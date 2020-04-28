@@ -1,4 +1,3 @@
-
 import os
 
 from kivy.core.window import Window
@@ -17,7 +16,6 @@ obj_file = os.path.join(_this_path, "./MQ-27.obj")
 
 
 class MainApp(App):
-
     def build(self):
         root = FloatLayout()
         self.renderer = Renderer(shader_file=shader_file)
@@ -38,7 +36,7 @@ class MainApp(App):
 
         scene.add(*obj.children)
         for obj in scene.children:
-            obj.pos.z = -0.
+            obj.pos.z = -0.0
             obj.scale = 0.1, 0.1, 0.1
 
         self.renderer.render(scene, camera)
@@ -61,5 +59,5 @@ class MainApp(App):
             child.rot.x += 2
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

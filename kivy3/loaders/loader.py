@@ -33,7 +33,6 @@ from kivy.clock import Clock
 
 
 class BaseLoader(object):
-
     def __init__(self, **kw):
         self._on_load_start = kw.pop("on_load_start", None)
         self._on_load_progress = kw.pop("on_load_progress", None)
@@ -80,4 +79,4 @@ class BaseLoader(object):
         """ This should be overridden in subclasses to provide
         parse of the source and return loaded from source object
         """
-        raise NotImplementedError('Must be overriden in subclass')
+        raise NotImplementedError("Must be overriden in subclass")

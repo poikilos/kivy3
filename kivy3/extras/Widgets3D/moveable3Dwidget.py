@@ -4,8 +4,11 @@ from kivy.clock import Clock
 import math
 import numpy as np
 
+
 class Moveable3DWidget(Object3DWidget):
-    def __init__(self, object3d, renderer, orbit_camera, axis=[1,1,1], base=None,  **kw):
+    def __init__(
+        self, object3d, renderer, orbit_camera, axis=[1, 1, 1], base=None, **kw
+    ):
         # Information needed: Orbit Camera:
         super(Moveable3DWidget, self).__init__(object3d, renderer)
         self.renderer = renderer
@@ -40,16 +43,17 @@ class Moveable3DWidget(Object3DWidget):
         return True
 
     def on_touch_move(self, touch):
-        #Function to override of what to do when touching objects.
+        # Function to override of what to do when touching objects.
         if self.base is None:
-            phi_offset = 0;
-            theta_offset = 0;
-            a = 0.
-            b = 0.
-            c = 0.
+            phi_offset = 0
+            theta_offset = 0
+            a = 0.0
+            b = 0.0
+            c = 0.0
         else:
-            _, rpy = self.object.parent.calculate_forward_kinematics(base=self.base, offset_xyz=self.object.pos)
-
+            _, rpy = self.object.parent.calculate_forward_kinematics(
+                base=self.base, offset_xyz=self.object.pos
+            )
 
             a = -math.radians(rpy[0])
             b = -math.radians(rpy[1])
@@ -61,37 +65,56 @@ class Moveable3DWidget(Object3DWidget):
         # c = math.radians(45.)
         if touch.grab_current is self:
             self.update_cam_angles()
-            dx = 0.001 * (-float(touch.dy)
-                                       * math.cos(self.theta) * math.sin(self.phi)
-                                       + float(touch.dx)
-                                       * math.sin(self.theta)) * self.orbit.radius
+            dx = (
+                0.001
+                * (
+                    -float(touch.dy) * math.cos(self.theta) * math.sin(self.phi)
+                    + float(touch.dx) * math.sin(self.theta)
+                )
+                * self.orbit.radius
+            )
 
-            dy = 0.001 * (float(touch.dx)
-                                       * math.cos(self.theta)
-                                       + float(touch.dy)
-                                       * math.sin(self.theta) * math.sin(self.phi)) \
-                                       * self.orbit.radius
+            dy = (
+                0.001
+                * (
+                    float(touch.dx) * math.cos(self.theta)
+                    + float(touch.dy) * math.sin(self.theta) * math.sin(self.phi)
+                )
+                * self.orbit.radius
+            )
             # z
             dz = 0.001 * float(touch.dy) * math.cos(self.phi) * self.orbit.radius
 
-            xyz = np.array([dx,dy,dz])
-            rx = np.array([[1, 0, 0],
-                           [0, math.cos(a), -math.sin(a)],
-                           [0, math.sin(a), math.cos(a)]])
-            ry = np.array([[math.cos(b), 0, math.sin(b)],
-                           [0, 1, 0],
-                           [-math.sin(b), 0, math.cos(b)]])
+            xyz = np.array([dx, dy, dz])
+            rx = np.array(
+                [
+                    [1, 0, 0],
+                    [0, math.cos(a), -math.sin(a)],
+                    [0, math.sin(a), math.cos(a)],
+                ]
+            )
+            ry = np.array(
+                [
+                    [math.cos(b), 0, math.sin(b)],
+                    [0, 1, 0],
+                    [-math.sin(b), 0, math.cos(b)],
+                ]
+            )
 
-            rz = np.array([[math.cos(c), -math.sin(c), 0],
-                           [math.sin(c), math.cos(c), 0],
-                           [0, 0, 1]])
+            rz = np.array(
+                [
+                    [math.cos(c), -math.sin(c), 0],
+                    [math.sin(c), math.cos(c), 0],
+                    [0, 0, 1],
+                ]
+            )
             xyz = rx.dot(xyz)
             xyz = ry.dot(xyz)
             xyz = rz.dot(xyz)
 
-            self.object.pos.x += float(xyz[0])*  abs(self.axis[0])
-            self.object.pos.y += float(xyz[1])*  abs(self.axis[1])
-            self.object.pos.z += float(xyz[2])*  abs(self.axis[2])
+            self.object.pos.x += float(xyz[0]) * abs(self.axis[0])
+            self.object.pos.y += float(xyz[1]) * abs(self.axis[1])
+            self.object.pos.z += float(xyz[2]) * abs(self.axis[2])
             self.on_pos_change()
         return True
 

@@ -43,7 +43,6 @@ JOINT_OFFSET_G = [0, 0, 0]
 
 
 class ObjectTrackball(BoxLayout):
-
     def __init__(self, camera, radius, *args, **kw):
         super(ObjectTrackball, self).__init__(*args, **kw)
         self.camera = camera
@@ -61,12 +60,12 @@ class ObjectTrackball(BoxLayout):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            if 'button' in touch.profile:
-                if touch.button == 'scrollup':
+            if "button" in touch.profile:
+                if touch.button == "scrollup":
                     if self.radius > 0:
                         self.radius *= 1.1
                     self.update_after_scroll()
-                elif touch.button == 'scrolldown':
+                elif touch.button == "scrolldown":
                     if self.radius > 0:
                         self.radius *= 0.9
                     self.update_after_scroll()
@@ -125,6 +124,7 @@ class BaseBox(BoxLayout):
         self.joints[1].rotation.y = -value[0]
         self.joints[0].rotation.y = value[0]  # a
 
+
 class SceneApp(App):
     joints = []
 
@@ -132,7 +132,7 @@ class SceneApp(App):
         root = BaseBox()
 
         self.renderer = Renderer(shader_file=shader_file)
-        self.renderer.set_clear_color((.2, .2, .2, 1.))
+        self.renderer.set_clear_color((0.2, 0.2, 0.2, 1.0))
         self.scene = Scene()
 
         self.manipulator = self.construct_manipulator()
@@ -168,23 +168,33 @@ class SceneApp(App):
         self.axis_d.rotation.x += 0.5
 
     def construct_manipulator(self):
-        material = Material(color=(0., 0., 1.), diffuse=(1., 1., 0.),
-                            specular=(.35, .35, .35))
+        material = Material(
+            color=(0.0, 0.0, 1.0), diffuse=(1.0, 1.0, 0.0), specular=(0.35, 0.35, 0.35)
+        )
 
         # axis a
         # one jaw
         axis_a_dimensions = JOINT_SIZE_A[0], JOINT_SIZE_A[2], JOINT_SIZE_A[1]
-        axis_a_geometry = create_joint_rectangle(axis_a_dimensions[0], axis_a_dimensions[1], axis_a_dimensions[2])
+        axis_a_geometry = create_joint_rectangle(
+            axis_a_dimensions[0], axis_a_dimensions[1], axis_a_dimensions[2]
+        )
         axis_a_left_mesh = Mesh(axis_a_geometry, material)
         axis_a_right_mesh = Mesh(axis_a_geometry, material)
         self.joints.append(axis_a_left_mesh)
         self.joints.append(axis_a_right_mesh)
 
         # axis b wrist
-        axis_b_dimensions = get_joint_hypo_length(JOINT_OFFSET_A_1), JOINT_SIZE_B[1], JOINT_SIZE_B[2]
-        axis_b_geometry = create_joint_rectangle(axis_b_dimensions[0], axis_b_dimensions[1], axis_b_dimensions[2])
-        material = Material(color=(1., 0., 0.), diffuse=(1., 0., 0.),
-                            specular=(.35, .35, .35))
+        axis_b_dimensions = (
+            get_joint_hypo_length(JOINT_OFFSET_A_1),
+            JOINT_SIZE_B[1],
+            JOINT_SIZE_B[2],
+        )
+        axis_b_geometry = create_joint_rectangle(
+            axis_b_dimensions[0], axis_b_dimensions[1], axis_b_dimensions[2]
+        )
+        material = Material(
+            color=(1.0, 0.0, 0.0), diffuse=(1.0, 0.0, 0.0), specular=(0.35, 0.35, 0.35)
+        )
         axis_b_mesh = Mesh(axis_b_geometry, material)
         self.joints.append(axis_b_mesh)
 
@@ -197,10 +207,17 @@ class SceneApp(App):
         axis_a_right_mesh.pos.z = -axis_b_dimensions[2] / 2
 
         # axis c bend
-        axis_c_dimensions = get_joint_hypo_length(JOINT_OFFSET_B), JOINT_SIZE_C[1], JOINT_SIZE_C[2]
-        axis_c_geometry = create_joint_rectangle(axis_c_dimensions[0], axis_c_dimensions[1], axis_c_dimensions[2])
-        material = Material(color=(1., 1., 0.), diffuse=(1., 1., 0.),
-                            specular=(.35, .35, .35))
+        axis_c_dimensions = (
+            get_joint_hypo_length(JOINT_OFFSET_B),
+            JOINT_SIZE_C[1],
+            JOINT_SIZE_C[2],
+        )
+        axis_c_geometry = create_joint_rectangle(
+            axis_c_dimensions[0], axis_c_dimensions[1], axis_c_dimensions[2]
+        )
+        material = Material(
+            color=(1.0, 1.0, 0.0), diffuse=(1.0, 1.0, 0.0), specular=(0.35, 0.35, 0.35)
+        )
         axis_c_mesh = Mesh(axis_c_geometry, material)
         self.joints.append(axis_c_mesh)
 
@@ -208,10 +225,17 @@ class SceneApp(App):
         axis_b_mesh.pos.x = axis_c_dimensions[0]
 
         # axis d bend
-        axis_d_dimensions = get_joint_hypo_length(JOINT_OFFSET_C), JOINT_SIZE_D[1], JOINT_SIZE_D[2]
-        axis_d_geometry = create_joint_rectangle(axis_d_dimensions[0], axis_d_dimensions[1], axis_d_dimensions[2])
-        material = Material(color=(1., 0., 1.), diffuse=(1., 0., 1.),
-                            specular=(.35, .35, .35))
+        axis_d_dimensions = (
+            get_joint_hypo_length(JOINT_OFFSET_C),
+            JOINT_SIZE_D[1],
+            JOINT_SIZE_D[2],
+        )
+        axis_d_geometry = create_joint_rectangle(
+            axis_d_dimensions[0], axis_d_dimensions[1], axis_d_dimensions[2]
+        )
+        material = Material(
+            color=(1.0, 0.0, 1.0), diffuse=(1.0, 0.0, 1.0), specular=(0.35, 0.35, 0.35)
+        )
         axis_d_mesh = Mesh(axis_d_geometry, material)
         self.joints.append(axis_d_mesh)
 
@@ -219,10 +243,17 @@ class SceneApp(App):
         axis_c_mesh.pos.x = axis_d_dimensions[0]
 
         # axis e mesh
-        axis_e_dimensions = get_joint_hypo_length(JOINT_OFFSET_D), JOINT_SIZE_E[1], JOINT_SIZE_E[2]
-        axis_e_geometry = create_joint_rectangle(axis_e_dimensions[0], axis_e_dimensions[1], axis_e_dimensions[2])
-        material = Material(color=(0., 1., 0.), diffuse=(0., 1., 0.),
-                            specular=(.35, .35, .35))
+        axis_e_dimensions = (
+            get_joint_hypo_length(JOINT_OFFSET_D),
+            JOINT_SIZE_E[1],
+            JOINT_SIZE_E[2],
+        )
+        axis_e_geometry = create_joint_rectangle(
+            axis_e_dimensions[0], axis_e_dimensions[1], axis_e_dimensions[2]
+        )
+        material = Material(
+            color=(0.0, 1.0, 0.0), diffuse=(0.0, 1.0, 0.0), specular=(0.35, 0.35, 0.35)
+        )
         axis_e_mesh = Mesh(axis_e_geometry, material)
         self.joints.append(axis_e_mesh)
 
@@ -230,10 +261,17 @@ class SceneApp(App):
         axis_d_mesh.pos.x = axis_e_dimensions[0]
 
         # axis f
-        axis_f_dimensions = get_joint_hypo_length(JOINT_OFFSET_E), JOINT_SIZE_F[1], JOINT_SIZE_F[2]
-        axis_f_geometry = create_joint_rectangle(axis_f_dimensions[0], axis_f_dimensions[1], axis_f_dimensions[2])
-        material = Material(color=(0., 1., 1.), diffuse=(0., 1., 1.),
-                            specular=(.35, .35, .35))
+        axis_f_dimensions = (
+            get_joint_hypo_length(JOINT_OFFSET_E),
+            JOINT_SIZE_F[1],
+            JOINT_SIZE_F[2],
+        )
+        axis_f_geometry = create_joint_rectangle(
+            axis_f_dimensions[0], axis_f_dimensions[1], axis_f_dimensions[2]
+        )
+        material = Material(
+            color=(0.0, 1.0, 1.0), diffuse=(0.0, 1.0, 1.0), specular=(0.35, 0.35, 0.35)
+        )
         axis_f_mesh = Mesh(axis_f_geometry, material)
         self.joints.append(axis_f_mesh)
 
@@ -241,10 +279,17 @@ class SceneApp(App):
         axis_e_mesh.pos.x = axis_f_dimensions[0]
 
         # axis_g
-        axis_g_dimensions = get_joint_hypo_length(JOINT_OFFSET_F), JOINT_SIZE_G[1], JOINT_SIZE_G[2]
-        axis_g_geometry = create_joint_rectangle(axis_g_dimensions[0], axis_g_dimensions[1], axis_g_dimensions[2])
-        material = Material(color=(1., .4, .1), diffuse=(1., .4, .1),
-                            specular=(.35, .35, .35))
+        axis_g_dimensions = (
+            get_joint_hypo_length(JOINT_OFFSET_F),
+            JOINT_SIZE_G[1],
+            JOINT_SIZE_G[2],
+        )
+        axis_g_geometry = create_joint_rectangle(
+            axis_g_dimensions[0], axis_g_dimensions[1], axis_g_dimensions[2]
+        )
+        material = Material(
+            color=(1.0, 0.4, 0.1), diffuse=(1.0, 0.4, 0.1), specular=(0.35, 0.35, 0.35)
+        )
         axis_g_mesh = Mesh(axis_g_geometry, material)
         self.joints.append(axis_g_mesh)
 
@@ -254,9 +299,12 @@ class SceneApp(App):
 
         # base
         base_dimensions = 0.05, axis_b_dimensions[1], axis_b_dimensions[2]
-        base_geometry = create_joint_rectangle(base_dimensions[0], base_dimensions[1], base_dimensions[2])
-        material = Material(color=(0., 1., 1.), diffuse=(0., 1., 1.),
-                            specular=(.35, .35, .35))
+        base_geometry = create_joint_rectangle(
+            base_dimensions[0], base_dimensions[1], base_dimensions[2]
+        )
+        material = Material(
+            color=(0.0, 1.0, 1.0), diffuse=(0.0, 1.0, 1.0), specular=(0.35, 0.35, 0.35)
+        )
         base_mesh = Mesh(base_geometry, material)
         self.joints.append(base_mesh)
 
@@ -272,7 +320,7 @@ class SceneApp(App):
 def create_joint_rectangle(x, y, z):
     geometry = BoxGeometry(x, y, z)
     for i in range(len(geometry.vertices)):
-        geometry.vertices[i][0] += (x / 2)
+        geometry.vertices[i][0] += x / 2
     return geometry
 
 
@@ -283,6 +331,6 @@ def get_joint_hypo_length(xyz):
     return math.sqrt(squares)
 
 
-if __name__ == '__main__':
-    Builder.load_file('children.kv')
+if __name__ == "__main__":
+    Builder.load_file("children.kv")
     SceneApp().run()

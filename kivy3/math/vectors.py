@@ -22,7 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
-__all__ = ('Vector2', 'Vector3', 'Vector4', )
+__all__ = (
+    "Vector2",
+    "Vector3",
+    "Vector4",
+)
 
 import math
 
@@ -38,19 +42,19 @@ class BaseVector(list):
     _d = 4  # dimension size
     _indeces = [0, 1, 2, 3]
     _null = [0, 0, 0, 0]
-    _coords = {'x': 0, 'y': 1, 'z': 2, 'v': 3}
+    _coords = {"x": 0, "y": 1, "z": 2, "v": 3}
 
     def __init__(self, *largs):
         if len(largs) == 1:
             if len(largs[0]) == self._d:
                 super(BaseVector, self).__init__(largs[0])
             else:
-                raise Exception('Invalid vector')
+                raise Exception("Invalid vector")
         else:
             if len(largs) == self._d:
                 super(BaseVector, self).__init__(largs)
             else:
-                raise Exception('Invalid vector')
+                raise Exception("Invalid vector")
         self._change_cb = None
 
     def set_change_cb(self, cb):
@@ -174,7 +178,7 @@ class BaseVector(list):
         return res
 
     def normalize(self):
-        self[:] = [x/self.length() for x in self]
+        self[:] = [x / self.length() for x in self]
         return self
 
     def lerp(self, v, alpha):
@@ -230,7 +234,7 @@ class Vector3(BaseVector):
     _d = 3
     _indeces = [0, 1, 2]
     _null = [0, 0, 0]
-    _coords = {'x': 0, 'y': 1, 'z': 2}
+    _coords = {"x": 0, "y": 1, "z": 2}
 
     def cross(self, v):
         t = copy(self)
@@ -244,9 +248,8 @@ class Vector3(BaseVector):
         pass
 
 
-
 class Vector2(BaseVector):
     _d = 2
     _indeces = [0, 1]
     _null = [0, 0]
-    _coords = {'x': 0, 'y': 1}
+    _coords = {"x": 0, "y": 1}

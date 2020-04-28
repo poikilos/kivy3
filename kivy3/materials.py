@@ -33,7 +33,7 @@ MATERIAL_TO_SHADER_MAP = {
     "specular": "Ks",
     "shininess": "Ns",  # specular coefficient
     "texture_ratio": "tex_ratio",
-    "id_color": "id_color"
+    "id_color": "id_color",
 }
 
 
@@ -42,10 +42,18 @@ def set_attribute_to_uniform(attr_name, uniform_var):
 
 
 class Material(ChangeState):
-
-    def __init__(self, map=None, transparency=1.0, color=(1, 1, 1),
-                 diffuse=(0, 0, 0), specular=(0, 0, 0),
-                 shininess=10.0, texture_ratio=0.0, id_color=None, **kwargs):
+    def __init__(
+        self,
+        map=None,
+        transparency=1.0,
+        color=(1, 1, 1),
+        diffuse=(0, 0, 0),
+        specular=(0, 0, 0),
+        shininess=10.0,
+        texture_ratio=0.0,
+        id_color=None,
+        **kwargs
+    ):
         self.map = map
         super(Material, self).__init__()
         transparency = float(transparency)
@@ -56,12 +64,12 @@ class Material(ChangeState):
         texture_ratio = float(texture_ratio)
 
         if id_color == None:
-            id_color = [0., 0., 0., 0.]
+            id_color = [0.0, 0.0, 0.0, 0.0]
         else:
             id_color = list(id_color)
-            id_color[0] = id_color[0]/255.
-            id_color[1] = id_color[1]/255.
-            id_color[2] = id_color[2]/255.
+            id_color[0] = id_color[0] / 255.0
+            id_color[1] = id_color[1] / 255.0
+            id_color[2] = id_color[2] / 255.0
             id_color.append(1)
         id_color = tuple(id_color)
 
@@ -70,15 +78,15 @@ class Material(ChangeState):
             setattr(self, k, v)
 
     def clear_id(self):
-        setattr(self,"id_color",(0,0,0,0))
+        setattr(self, "id_color", (0, 0, 0, 0))
 
     def __setattr__(self, k, v):
         if k in MATERIAL_TO_SHADER_MAP:
             uniform_var = MATERIAL_TO_SHADER_MAP[k]
             self.changes[uniform_var] = v
         else:
-            if k == 'map' and v:
-                self.changes['tex_ratio'] = 1.0
+            if k == "map" and v:
+                self.changes["tex_ratio"] = 1.0
             if type(v) in [float, int, str, list]:
                 self.changes[k] = v
         super(Material, self).__setattr__(k, v)

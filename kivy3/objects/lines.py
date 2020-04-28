@@ -27,22 +27,21 @@ from kivy3 import Vector3
 from kivy3.core.object3d import Object3D
 
 DEFAULT_VERTEX_FORMAT = [
-    (b'v_pos', 3, 'float'),
-    (b'v_normal', 3, 'float'),
-    (b'v_tc0', 2, 'float')
+    (b"v_pos", 3, "float"),
+    (b"v_normal", 3, "float"),
+    (b"v_tc0", 2, "float"),
 ]
-DEFAULT_MESH_MODE = 'lines'
+DEFAULT_MESH_MODE = "lines"
 
 
 class Lines(Object3D):
-
     def __init__(self, geometry, material, **kw):
         super(Lines, self).__init__(**kw)
         self.geometry = geometry
         self.material = material
         self.mtl = self.material  # shortcut for material property
-        self.vertex_format = kw.pop('vertex_format', DEFAULT_VERTEX_FORMAT)
-        self.mesh_mode = kw.pop('mesh_mode', DEFAULT_MESH_MODE)
+        self.vertex_format = kw.pop("vertex_format", DEFAULT_VERTEX_FORMAT)
+        self.mesh_mode = kw.pop("mesh_mode", DEFAULT_MESH_MODE)
         self.create_mesh()
 
     def create_mesh(self):
@@ -51,7 +50,7 @@ class Lines(Object3D):
         indices = []
         idx = 0
         for line in self.geometry.lines:
-            for i, k in enumerate(['a', 'b']):
+            for i, k in enumerate(["a", "b"]):
                 v_idx = getattr(line, k)
                 vertex = self.geometry.vertices[v_idx]
                 vertices.extend(vertex)
@@ -68,21 +67,21 @@ class Lines(Object3D):
                 indices.append(idx)
                 idx += 1
         if idx >= 65535 - 1:
-            msg = 'Mesh must not contain more than 65535 indices, {} given'
+            msg = "Mesh must not contain more than 65535 indices, {} given"
             raise ValueError(msg.format(idx + 1))
         kw = dict(
             vertices=vertices,
             indices=indices,
             fmt=self.vertex_format,
-            mode=self.mesh_mode
+            mode=self.mesh_mode,
         )
         if self.material.map:
-            kw['texture'] = self.material.map
+            kw["texture"] = self.material.map
         self._mesh = KivyMesh(**kw)
 
     def set_material_color(self, color):
-        self.material.__setattr__('color', tuple(float(c) for c in color))
-        self.material.__setattr__('diffuse', tuple(float(c) for c in color))
+        self.material.__setattr__("color", tuple(float(c) for c in color))
+        self.material.__setattr__("diffuse", tuple(float(c) for c in color))
 
     def custom_instructions(self):
         yield self.material

@@ -1,4 +1,3 @@
-
 import os
 import kivy3
 from kivy.app import App
@@ -17,35 +16,35 @@ shader_file = os.path.join(_this_path, "./blinnphong.glsl")
 obj_file = os.path.join(_this_path, "./monkey.obj")
 stl_file = os.path.join(_this_path, "./test.stl")
 
-class SceneApp(App):
 
+class SceneApp(App):
     def build(self):
         root = FloatLayout()
 
         self.renderer = Renderer(shader_file=shader_file)
-        self.renderer.set_clear_color((.16, .30, .44, 1.))
-
+        self.renderer.set_clear_color((0.16, 0.30, 0.44, 1.0))
 
         scene = Scene()
         # geometry = CylinderGeometry(0.5, 2)
         geometry = SphereGeometry(1)
         # geometry = BoxGeometry(1, 1, 1)
-        material = Material(color=(0.3, 0., 0.3), diffuse=(0.3, 0.3, 0.3),
-                            specular=(0., 0., 0.))
+        material = Material(
+            color=(0.3, 0.0, 0.3), diffuse=(0.3, 0.3, 0.3), specular=(0.0, 0.0, 0.0)
+        )
 
         loader = STLLoader()
-        obj = loader.load(stl_file,material)
+        obj = loader.load(stl_file, material)
         self.item = obj
 
         scene.add(self.item)
 
         self.cube = Mesh(geometry, material)
         self.item.pos.z = -1.5
-        #self.cube.pos.z=-5
+        # self.cube.pos.z=-5
         camera = PerspectiveCamera(75, 0.3, 0.5, 1000)
-        #camera = OrthographicCamera()
+        # camera = OrthographicCamera()
 
-        #scene.add(self.cube)
+        # scene.add(self.cube)
         self.renderer.render(scene, camera)
 
         root.add_widget(self.renderer)
@@ -68,5 +67,5 @@ class SceneApp(App):
         self.item.rotation.z += 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     SceneApp().run()

@@ -32,5 +32,5 @@ Implements orthographic camera type.
 __all__ = ()
 
 
-class OrthographicCamera():
+class OrthographicCamera:
     """ Implements orthographic camera """

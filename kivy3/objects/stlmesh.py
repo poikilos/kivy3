@@ -28,27 +28,43 @@ from kivy3 import Object3D, Mesh, Material, Vector2
 import numpy as np
 
 DEFAULT_VERTEX_FORMAT = [
-    (b'v_pos', 3, 'float'),
-    (b'v_normal', 3, 'float'),
-    (b'v_tc0', 2, 'float')
+    (b"v_pos", 3, "float"),
+    (b"v_normal", 3, "float"),
+    (b"v_tc0", 2, "float"),
 ]
-DEFAULT_MESH_MODE = 'triangles'
+DEFAULT_MESH_MODE = "triangles"
 
 
 class STLMesh(Object3D):
     def __init__(self, v0, v1, v2, normals, material, **kw):
         super(STLMesh, self).__init__(**kw)
-        self.vertex_format = kw.pop('vertex_format', DEFAULT_VERTEX_FORMAT)
-        self.mesh_mode = kw.pop('mesh_mode', DEFAULT_MESH_MODE)
+        self.vertex_format = kw.pop("vertex_format", DEFAULT_VERTEX_FORMAT)
+        self.mesh_mode = kw.pop("mesh_mode", DEFAULT_MESH_MODE)
         self.material = material
         self.normals = normals
-        indices = list(range(0, len(v0)*3))
+        indices = list(range(0, len(v0) * 3))
         uvs = np.zeros((len(v0), 2)).astype(np.float32)
-        vertices = list(np.block([v0.astype(np.float32),normals.astype(np.float32),uvs,v1.astype(np.float32),normals.astype(np.float32),uvs,v2.astype(np.float32),normals.astype(np.float32),uvs]).flatten())
-        kw2=dict(vertices=vertices,
-                indices=indices,
-                fmt=self.vertex_format,
-                mode=self.mesh_mode)
+        vertices = list(
+            np.block(
+                [
+                    v0.astype(np.float32),
+                    normals.astype(np.float32),
+                    uvs,
+                    v1.astype(np.float32),
+                    normals.astype(np.float32),
+                    uvs,
+                    v2.astype(np.float32),
+                    normals.astype(np.float32),
+                    uvs,
+                ]
+            ).flatten()
+        )
+        kw2 = dict(
+            vertices=vertices,
+            indices=indices,
+            fmt=self.vertex_format,
+            mode=self.mesh_mode,
+        )
 
         # if self.material.map:
         #     kw2['texture'] = self.material.map

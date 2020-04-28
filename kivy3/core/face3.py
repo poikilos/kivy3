@@ -36,7 +36,6 @@ from kivy3 import Vector3
 
 
 class Face3(object):
-
     def __init__(self, a, b, c, normal=None):
         self.a = a
         self.b = b

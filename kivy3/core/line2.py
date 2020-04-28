@@ -36,7 +36,6 @@ from kivy3 import Vector3, Geometry
 
 
 class Line2(object):
-
     def __init__(self, a, b, normal=None):
         self.a = a
         self.b = b

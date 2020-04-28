@@ -44,12 +44,17 @@ class WaveObject(object):
         normals, texcoords and faces
     """
 
-    _mtl_map = {"Ka": "color", "Kd": "diffuse", "Ks": "specular",
-                "Ns": "shininess", "Tr": "transparency",
-                "d": "transparency", "map_Kd": "map"
-                }
+    _mtl_map = {
+        "Ka": "color",
+        "Kd": "diffuse",
+        "Ks": "specular",
+        "Ns": "shininess",
+        "Tr": "transparency",
+        "d": "transparency",
+        "map_Kd": "map",
+    }
 
-    def __init__(self, loader, name=''):
+    def __init__(self, loader, name=""):
         self.name = name
         self.faces = []
         self.loader = loader
@@ -72,7 +77,7 @@ class WaveObject(object):
             norms = f[1]
             tcs = f[2]
             face3 = Face3(0, 0, 0)
-            for i, e in enumerate(['a', 'b', 'c']):
+            for i, e in enumerate(["a", "b", "c"]):
                 # get normal components
                 n = (0.0, 0.0, 0.0)
                 if norms[i] != -1:
@@ -89,7 +94,7 @@ class WaveObject(object):
                 t = (0.0, 0.0)
                 if tcs[i] != -1:
                     t = self.loader.texcoords[tcs[i] - 1]
-                tc = Vector2(t[0], 1. - t[1])
+                tc = Vector2(t[0], 1.0 - t[1])
                 geometry.face_vertex_uvs[0].append(tc)
 
             geometry.faces.append(face3)
@@ -98,17 +103,18 @@ class WaveObject(object):
         if self.mtl_name in self.loader.mtl_contents:
             raw_material = self.loader.mtl_contents[self.mtl_name]
             # shader ignores values
-            zeros = ['0', '0.0', '0.00', '0.000', '0.0000',
-                     '0.00000', '0.000000']
+            zeros = ["0", "0.0", "0.00", "0.000", "0.0000", "0.00000", "0.000000"]
             for k, v in raw_material.items():
                 _k = self._mtl_map.get(k, None)
                 # TODO: also handle map_Ka and map_Ks
-                if k in ["map_Kd", ]:
+                if k in [
+                    "map_Kd",
+                ]:
                     # TODO: map file path may contains spaces.
                     #      current implementation fails.
                     map_path = join(mtl_dirname, v[0])
                     if not exists(map_path):
-                        msg = u'WaveObject: Texture not found <{}>'
+                        msg = u"WaveObject: Texture not found <{}>"
                         Logger.warning(msg.format(map_path))
                         continue
                     tex = Image(map_path).texture
@@ -116,24 +122,23 @@ class WaveObject(object):
                     continue
                 if _k:
                     if len(v) == 1:
-                        v[0] = '0.000001' if v[0] in zeros else v[0]
+                        v[0] = "0.000001" if v[0] in zeros else v[0]
                         v = float(v[0])
-                        if k == 'Tr':
-                            v = 1. - v
+                        if k == "Tr":
+                            v = 1.0 - v
                         setattr(material, _k, v)
                     else:
                         v = list(map(lambda x: float(x), v))
                         setattr(material, _k, v)
 
         if not material.map:
-            material.map = Image(folder + '/empty.png').texture
+            material.map = Image(folder + "/empty.png").texture
             material.texture_ratio = 0.0
         mesh = Mesh(geometry, material)
         return mesh
 
 
 class OBJLoader(BaseLoader):
-
     def __init__(self, **kw):
         super(OBJLoader, self).__init__(**kw)
         self.mtl_source = None  # source of MTL
@@ -141,16 +146,16 @@ class OBJLoader(BaseLoader):
 
     def load_mtl(self):
         if not exists(self.mtl_source):
-            msg = u'OBJLoader: mtl file not found <{}>'
+            msg = u"OBJLoader: mtl file not found <{}>"
             Logger.warning(msg.format(self.mtl_source))
             return
         for line in open(self.mtl_source, "r"):
-            if line.startswith('#'):
+            if line.startswith("#"):
                 continue
             values = line.split()
             if not values:
                 continue
-            if values[0] == 'newmtl':
+            if values[0] == "newmtl":
                 mtl = self.mtl_contents[values[1]] = {}
                 continue
             elif mtl is None:
@@ -166,23 +171,23 @@ class OBJLoader(BaseLoader):
         faces_section = False
 
         for line in open(self.source, "r"):
-            if line.startswith('#'):
+            if line.startswith("#"):
                 continue
-            if line.startswith('s'):
+            if line.startswith("s"):
                 continue
             values = line.split()
             if not values:
                 continue
-            if values[0] == 'o' or values[0] == 'g':
+            if values[0] == "o" or values[0] == "g":
                 wvobj.name = values[1]
-            elif values[0] == 'mtllib':
+            elif values[0] == "mtllib":
                 if not self.mtl_source:
                     _obj_dir = abspath(dirname(self.source))
                     self.mtl_source = join(_obj_dir, values[1])
                     self.load_mtl()
-            elif values[0] == 'usemtl':
+            elif values[0] == "usemtl":
                 wvobj.mtl_name = values[1]
-            elif values[0] == 'v':
+            elif values[0] == "v":
                 if faces_section:
                     # here we yield new mesh object
                     faces_section = False
@@ -192,14 +197,14 @@ class OBJLoader(BaseLoader):
                 if self.swapyz:
                     v = v[0], v[2], v[1]
                 self.vertices.append(v)
-            elif values[0] == 'vn':
+            elif values[0] == "vn":
                 v = list(map(float, values[1:4]))
                 if self.swapyz:
                     v = v[0], v[2], v[1]
                 self.normals.append(v)
-            elif values[0] == 'vt':
+            elif values[0] == "vt":
                 self.texcoords.append(list(map(float, values[1:3])))
-            elif values[0] == 'f':
+            elif values[0] == "f":
                 if not faces_section:
                     faces_section = True
                 # face values
@@ -209,16 +214,13 @@ class OBJLoader(BaseLoader):
                     fcs = [f]
                 # square, convert into two triangles
                 elif len(f) == 4:
-                    fcs = [
-                        f[:3],
-                        [f[0], f[2], f[3]]
-                    ]
+                    fcs = [f[:3], [f[0], f[2], f[3]]]
                 for f in fcs:
                     face = []
                     texcoords = []
                     norms = []
                     for v in f:
-                        w = v.split('/')
+                        w = v.split("/")
                         face.append(int(w[0]))
                         if len(w) >= 2 and len(w[1]) > 0:
                             texcoords.append(int(w[1]))

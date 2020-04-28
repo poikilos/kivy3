@@ -1,4 +1,3 @@
-
 import os
 import math
 from kivy.app import App
@@ -13,7 +12,6 @@ obj_file = os.path.join(_this_path, "./MQ-27.obj")
 
 
 class ObjectTrackball(FloatLayout):
-
     def __init__(self, camera, radius, *args, **kw):
         super(ObjectTrackball, self).__init__(*args, **kw)
         self.camera = camera
@@ -59,7 +57,6 @@ class ObjectTrackball(FloatLayout):
 
 
 class MainApp(App):
-
     def build(self):
         self.renderer = Renderer()
         scene = Scene()
@@ -85,5 +82,5 @@ class MainApp(App):
         self.renderer.camera.aspect = aspect
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MainApp().run()

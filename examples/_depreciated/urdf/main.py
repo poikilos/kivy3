@@ -1,7 +1,12 @@
 import os
 import math
 from kivy.app import App
-from kivy.properties import ListProperty, ObjectProperty, StringProperty, NumericProperty
+from kivy.properties import (
+    ListProperty,
+    ObjectProperty,
+    StringProperty,
+    NumericProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
 
 from kivy3 import Scene, Renderer, PerspectiveCamera, Mesh, Material
@@ -31,23 +36,34 @@ class BaseBox(BoxLayout):
 
 
 class JointControl(BoxLayout):
-    name = StringProperty('Joint Name')
+    name = StringProperty("Joint Name")
     value = NumericProperty(0)
     min = NumericProperty(0)
     max = NumericProperty(360)
     joint = ObjectProperty()
 
     def on_value(self, inst, value):
-        self.joint.rotation.x = self.joint.rot_offset[0] + value * self.joint.axis[0] if self.joint.axis[0] else self.joint.rotation.x
-        self.joint.rotation.y = self.joint.rot_offset[0] + value * self.joint.axis[1] if self.joint.axis[1] else self.joint.rotation.y
-        self.joint.rotation.z = self.joint.rot_offset[0] + value * self.joint.axis[2] if self.joint.axis[2] else self.joint.rotation.z
+        self.joint.rotation.x = (
+            self.joint.rot_offset[0] + value * self.joint.axis[0]
+            if self.joint.axis[0]
+            else self.joint.rotation.x
+        )
+        self.joint.rotation.y = (
+            self.joint.rot_offset[0] + value * self.joint.axis[1]
+            if self.joint.axis[1]
+            else self.joint.rotation.y
+        )
+        self.joint.rotation.z = (
+            self.joint.rot_offset[0] + value * self.joint.axis[2]
+            if self.joint.axis[2]
+            else self.joint.rotation.z
+        )
 
 
 class MainApp(App):
-
     def build(self):
         self.renderer = Renderer(shader_file=shader_file)
-        self.renderer.set_clear_color((.6, .6, .6, 1.))
+        self.renderer.set_clear_color((0.6, 0.6, 0.6, 1.0))
         scene = Scene()
 
         camera = PerspectiveCamera(90, 1, 0.1, 2500)
@@ -58,14 +74,16 @@ class MainApp(App):
 
         # robot = URDF.from_xml_file('./RS2-1032-segmented-def.SLDASM/urdf/RS2-1032-segmented-def.SLDASM.urdf')
         # robot = URDF.from_xml_file('./RS2-1021-segmented-def-urdf/urdf/RS2-1021-segmented-def-urdf.urdf')
-        robot = URDF.from_xml_file('RS2-7FN-Def-URDF-Exp/urdf/RS2-7FN-Def-URDF-Exp.urdf')
+        robot = URDF.from_xml_file(
+            "RS2-7FN-Def-URDF-Exp/urdf/RS2-7FN-Def-URDF-Exp.urdf"
+        )
         link_dict = {}
 
         for link in robot.links:
 
             # get geometry each link
             filename = link.visual.geometry.filename
-            filename = filename.replace('package:/', '.')
+            filename = filename.replace("package:/", ".")
             print(filename)
             stl = mesh.Mesh.from_file(filename)
             # geo = STLGeometry(stl)
@@ -73,10 +91,12 @@ class MainApp(App):
             # if len(geo.vertices) == 0:
             #     geo = BoxGeometry(0.1, 0.1, 0.1)
 
-            material = Material(color=link.visual.material.color.rgba,
-                                diffuse=link.visual.material.color.rgba,
-                                specular=(.01, .01, .01),
-                                shininess=4)
+            material = Material(
+                color=link.visual.material.color.rgba,
+                diffuse=link.visual.material.color.rgba,
+                specular=(0.01, 0.01, 0.01),
+                shininess=4,
+            )
 
             obj = STLMesh(stl, material, name=link.name)
 
@@ -96,7 +116,11 @@ class MainApp(App):
             child_link.rot.x = math.degrees(joint.origin.rotation[0])
             child_link.rot.z = math.degrees(joint.origin.rotation[1])
             child_link.rot.y = math.degrees(joint.origin.rotation[2])
-            child_link.rot_offset = [child_link.rot.x, child_link.rot.y, child_link.rot.z]
+            child_link.rot_offset = [
+                child_link.rot.x,
+                child_link.rot.y,
+                child_link.rot.z,
+            ]
             child_link.axis = joint.axis
             self.joints.append(parent_link)
             self.child_joints.append(child_link)
@@ -124,9 +148,10 @@ class MainApp(App):
         self.renderer.camera.aspect = aspect
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Disable the orange dot that appears on right clicks.
     from kivy.config import Config
+
     # Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
     MainApp().run()
