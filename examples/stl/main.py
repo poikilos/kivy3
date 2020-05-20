@@ -18,21 +18,20 @@ class STLLoaderApp(App):
     """
 
     def build(self):
+        renderer = Renderer(shader_file=shaders.blinnphong)
+        renderer.set_clear_color((0.16, 0.30, 0.44, 1.0))
+        
+        loader = STLLoader()
         material = Material(
             color=(0.3, 0.0, 0.3),
             diffuse=(0.3, 0.3, 0.3),
             specular=(0.0, 0.0, 0.0)
         )
-
-        loader = STLLoader()
         obj = loader.load(stl_file, material)
         obj.pos.z = 0
 
         scene = Scene()
         scene.add(obj)
-
-        renderer = Renderer(shader_file=shaders.blinnphong)
-        renderer.set_clear_color((0.16, 0.30, 0.44, 1.0))
 
         camera = PerspectiveCamera(75, 0.3, 0.5, 1000)
         camera.pos.z = 1.5

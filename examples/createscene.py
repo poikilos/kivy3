@@ -20,8 +20,8 @@ class SceneApp(App):
     def build(self):
         root = FloatLayout()
 
-        self.renderer = Renderer(shader_file=shader_file)
-        self.renderer.set_clear_color((0.16, 0.30, 0.44, 1.0))
+        renderer = Renderer(shader_file=shader_file)
+        renderer.set_clear_color((0.16, 0.30, 0.44, 1.0))
 
         scene = Scene()
         # geometry = CylinderGeometry(0.5, 2)
@@ -39,23 +39,20 @@ class SceneApp(App):
 
         self.cube = Mesh(geometry, material)
         self.item.pos.z = -1.5
-        # self.cube.pos.z=-5
         camera = PerspectiveCamera(75, 0.3, 0.5, 1000)
-        # camera = OrthographicCamera()
+        renderer.render(scene, camera)
 
-        # scene.add(self.cube)
-        self.renderer.render(scene, camera)
-
-        root.add_widget(self.renderer)
+        root.add_widget(renderer)
         Clock.schedule_interval(self._rotate_cube, 1 / 20)
-        self.renderer.bind(size=self._adjust_aspect)
+        
+        def _adjust_aspect(inst, val):
+            rsize = renderer.size
+            aspect = rsize[0] / float(rsize[1])
+            renderer.camera.aspect = aspect
+        renderer.bind(size=_adjust_aspect)
 
         return root
 
-    def _adjust_aspect(self, inst, val):
-        rsize = self.renderer.size
-        aspect = rsize[0] / float(rsize[1])
-        self.renderer.camera.aspect = aspect
 
     def _rotate_cube(self, dt):
         self.cube.rotation.x += 1
