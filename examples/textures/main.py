@@ -15,6 +15,9 @@ mtl_file = os.path.join(_this_path, "./orion.mtl")
 
 
 class TextureExample(App):
+    """This example shows how to load in textured models.
+    """
+
     def build(self):
         renderer = Renderer(shader_file=shader_file)
         loader = OBJMTLLoader()

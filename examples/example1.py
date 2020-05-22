@@ -18,28 +18,29 @@ class MainApp(App):
     """
 
     def build(self):
-        root = FloatLayout()
         renderer = Renderer(shader_file=shader_file)
-        scene = Scene()
-        camera = PerspectiveCamera(15, 1, 1, 1000)
+
         # load obj file
         loader = OBJLoader()
         obj = loader.load(obj_path)
 
+        camera = PerspectiveCamera(15, 1, 1, 1000)
+
+        scene = Scene()
         scene.add(*obj.children)
         for obj in scene.children:
             obj.pos.z = -20
-
-        renderer.render(scene, camera)
-        root.add_widget(renderer)
         
         def _adjust_aspect(inst, val):
             rsize = renderer.size
             aspect = rsize[0] / float(rsize[1])
             renderer.camera.aspect = aspect
         renderer.bind(size=_adjust_aspect)
-        return root
 
+        root = FloatLayout()
+        renderer.render(scene, camera)
+        root.add_widget(renderer)
+        return root
 
 
 if __name__ == "__main__":

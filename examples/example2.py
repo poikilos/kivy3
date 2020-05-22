@@ -17,6 +17,7 @@ class MainApp(App):
         renderer = Renderer()
         scene = Scene()
         camera = PerspectiveCamera(15, 1, 1, 1000)
+
         # load obj file
         loader = OBJLoader()
         obj_path = os.path.join(os.path.dirname(__file__), "./testnurbs-2.obj")
@@ -47,7 +48,6 @@ class MainApp(App):
             renderer.camera.aspect = aspect
         renderer.bind(size=_adjust_aspect)
         return root
-
 
 
 if __name__ == "__main__":

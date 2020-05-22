@@ -55,6 +55,10 @@ def get_joint_hypo_length(xyz):
 
 
 class ManipulatorExample(App):
+    """This example shows how to manipulate objects in the
+    scene
+    """
+
     joints = []
 
     def build(self):

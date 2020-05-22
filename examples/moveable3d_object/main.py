@@ -18,6 +18,9 @@ shader_file = os.path.join(_this_path, "../blinnphong.glsl")
 
 
 class Moveable3DObjectExample(App):
+    """This example shows how to make use of the Moveable3DWidget
+    """
+
     def build(self):
         renderer = Renderer(shader_file=shader_file)
         renderer.set_clear_color((0.16, 0.30, 0.44, 1.0))

@@ -12,6 +12,9 @@ import math
 
 
 class GridExample(App):
+    """This example demonstrates the use of a grid floor
+    """
+
     def build(self):
         renderer = Renderer()
         renderer.set_clear_color((0.2, 0.2, 0.2, 1.0))

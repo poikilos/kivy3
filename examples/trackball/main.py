@@ -13,6 +13,9 @@ obj_file = os.path.join(_this_path, "./MQ-27.obj")
 
 
 class TrackballExample(App):
+    """This example shows how to use the Trackball-Navigation.
+    """
+
     def build(self):
         renderer = Renderer()
 

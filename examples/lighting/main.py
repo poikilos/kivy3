@@ -14,6 +14,9 @@ obj_file = os.path.join(_this_path, "./MQ-27.obj")
 
 
 class LightingExample(App):
+    """This is a basic example using a light source and a shaded model
+    """
+
     def build(self):
         renderer = Renderer(shader_file=shader_file)
         renderer.main_light.pos = 1, 20, 50

@@ -17,6 +17,9 @@ shader_file = os.path.join(_this_path, "./blinnphong.glsl")
 
 
 class SphereExample(App):
+    """This is a basic example showcasing the Sphere Geometry.
+    """
+
     def build(self):
         renderer = Renderer(shader_file=shader_file)
         renderer.set_clear_color((0.2, 0.2, 0.2, 1.0))
