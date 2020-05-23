@@ -16,16 +16,17 @@ _this_path = os.path.dirname(os.path.realpath(__file__))
 shader_file = os.path.join(_this_path, "./blinnphong.glsl")
 
 
-class MainApp(App):
-    def build(self):
-        self.renderer = Renderer(shader_file=shader_file)
-        scene = Scene()
-        camera = PerspectiveCamera(45, 1, 0.1, 2500)
-        self.renderer.set_clear_color((0.2, 0.2, 0.2, 1.0))
+class SphereExample(App):
+    """This is a basic example showcasing the Sphere Geometry.
+    """
 
-        self.camera = camera
-        self.renderer.main_light.intensity = 5000
-        root = ObjectTrackball(camera, 10)
+    def build(self):
+        renderer = Renderer(shader_file=shader_file)
+        renderer.set_clear_color((0.2, 0.2, 0.2, 1.0))
+        
+        camera = PerspectiveCamera(45, 1, 0.1, 2500)
+
+        renderer.main_light.intensity = 5000
 
         geometry = SphereGeometry(radius=1)
         material = Material(
@@ -36,7 +37,6 @@ class MainApp(App):
             transparency=0.8,
         )
         obj = Mesh(geometry, material)
-        scene.add(obj)
 
         # create a grid on the xz plane
         geometry = GridGeometry(size=(30, 30), spacing=1)
@@ -48,19 +48,23 @@ class MainApp(App):
         )
         lines = Lines(geometry, material)
         lines.rotation.x = 90
+
+        scene = Scene()
+        scene.add(obj)
         scene.add(lines)
 
-        self.renderer.render(scene, camera)
-        self.renderer.main_light.intensity = 500
+        renderer.render(scene, camera)
+        renderer.main_light.intensity = 500
 
-        root.add_widget(self.renderer)
-        self.renderer.bind(size=self._adjust_aspect)
+        def _adjust_aspect(inst, val):
+            rsize = renderer.size
+            aspect = rsize[0] / float(rsize[1])
+            renderer.camera.aspect = aspect
+        renderer.bind(size=_adjust_aspect)
+
+        root = ObjectTrackball(camera, 10)
+        root.add_widget(renderer)
         return root
-
-    def _adjust_aspect(self, inst, val):
-        rsize = self.renderer.size
-        aspect = rsize[0] / float(rsize[1])
-        self.renderer.camera.aspect = aspect
 
 
 class ObjectTrackball(FloatLayout):
@@ -109,4 +113,4 @@ class ObjectTrackball(FloatLayout):
 
 
 if __name__ == "__main__":
-    MainApp().run()
+    SphereExample().run()
