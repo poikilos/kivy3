@@ -13,21 +13,16 @@ Camera, Scene, Renderers, loaders you may use to load 3D objects.
 Create a virtual environment.
 
     $ python3 -m venv .
+    $ ./bin/pip install -U pip
+    $ ./bin/pip install wheel
 
-Install dependencies.
+To install latest development version of kivy3 run:
 
-    $ ./bin/pip install Cython==0.29.9
-    $ ./bin/pip install kivy==1.11.1
-    $ ./bin/pip install pyyaml
-    $ ./bin/pip install numpy
-    $ ./bin/pip install scipy
-    $ ./bin/pip install numpy-stl
-    $ ./bin/pip install https://github.com/ros-infrastructure/catkin_pkg/archive/0.4.17.tar.gz
-    $ ./bin/pip install https://github.com/ros/urdf_parser_py/archive/0.4.3.tar.gz
+    $ ./bin/pip install https://github.com/kivy/kivy3/zipball/development
+
+or, if you do local development:
+
+    $ ./bin/pip install -e .[stl,urdf]
 
 For further info about kivy visit
 [Kivy documentation](https://kivy.org/docs/installation/installation.html).
-
-After successful Kivy installation install Kivy3 with this:
-
-    $ ./bin/pip install https://github.com/kivy/kivy3/zipball/development

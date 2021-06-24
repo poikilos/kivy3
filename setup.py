@@ -1,27 +1,51 @@
-#!/usr/bin/env python
+from setuptools import find_packages
+from setuptools import setup
+import os
 
-from setuptools import find_packages, setup
-from os.path import join, dirname
-from os import walk
 
-examples = {}
-for root, subFolders, files in walk('examples'):
-    for fn in files:
-        ext = fn.split('.')[-1].lower()
-        filename = join(root, fn)
-        directory = '%s%s' % ('share/kivy3-', dirname(filename))
-        if directory not in examples:
-            examples[directory] = []
-        examples[directory].append(filename)
+def read_file(name):
+    with open(os.path.join(os.path.dirname(__file__), name)) as f:
+        return f.read()
+
+
+version = '0.1.dev0'
+shortdesc = 'Kivy extensions for 3D graphics'
+longdesc = '\n\n'.join([read_file(name) for name in [
+    'README.md',
+    'CHANGES.md',
+    'LICENSE.md'
+]])
+
 
 setup(
     name='kivy3',
-    version='20.04.09',
-    description='Kivy extensions for 3D graphics',
-    author='Niko Skrypnik',
+    version=version,
+    description=shortdesc,
+    long_description=longdesc,
+    classifiers=[
+        'Programming Language :: Python'
+    ],
+    author='Niko Skrypnik, kivy3 Contributors',
     author_email='nskrypnik@gmail.com',
+    license='MIT',
+    packages=find_packages(exclude=('tests',)),
     include_package_data=True,
-    packages=find_packages(exclude=("tests",)),
-    data_files=list(examples.items()),
-    requires=['kivy', ]
+    zip_safe=False,
+    install_requires=[
+        'scipy',
+        'kivy'
+    ],
+    extras_require=dict(
+        stl=[
+            'numpy-stl'
+        ],
+        urdf=[
+            'lxml',
+            'numpy-stl',
+            'urdf_parser_py'
+        ],
+    ),
+    dependency_links=[
+        'https://github.com/ros/urdf_parser_py/archive/refs/tags/1.1.0.tar.gz#egg=urdf_parser_py-1.1.0'
+    ]
 )

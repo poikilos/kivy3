@@ -1,7 +1,7 @@
-catkin-pkg==0.4.16
-certifi==2019.11.28
-chardet==3.0.4
-docutils==0.16
+catkin-pkg==0.4.23
+certifi==2021.5.30
+chardet==4.0.0
+docutils==0.17.1
 idna==2.9
 Kivy==1.11.1
 Kivy-Garden==0.1.4
