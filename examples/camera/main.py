@@ -26,7 +26,7 @@ class MainApp(App):
         self.camera.pos.z = 5
         loader = OBJMTLLoader()
         obj = loader.load(obj_file, mtl_file)
-        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
+        self._keyboard = Window.request_keyboard(self._keyboard_closed, root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
 
         scene.add(*obj.children)
